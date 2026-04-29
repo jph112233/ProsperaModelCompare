@@ -1,5 +1,7 @@
 # LLM API Playground
 
+![Model Compare screenshot](public/screenshot.png)
+
 A local, browser-based playground for testing OpenAI-compatible chat completion APIs. No backend required - your browser calls the target API directly. All settings and responses are saved in `localStorage`.
 
 ## What you can do
