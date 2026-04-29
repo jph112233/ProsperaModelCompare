@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import type { Preset, PresetData } from '@/lib/presets'
-import { loadPresets, savePreset, deletePreset, updatePresetName } from '@/lib/presets'
+import { loadPresets, savePreset, deletePreset, updatePresetName, overwritePreset } from '@/lib/presets'
 
 interface PresetsPanelProps {
   onGetCurrentState: () => PresetData
@@ -89,6 +89,13 @@ export default function PresetsPanel({ onGetCurrentState, onLoadPreset }: Preset
     if (name) updatePresetName(id, name)
     setEditingId(null)
     setEditingName('')
+    refresh()
+  }
+
+  function handleOverwrite(id: string, e: React.MouseEvent) {
+    e.stopPropagation()
+    const data = onGetCurrentState()
+    overwritePreset(id, data)
     refresh()
   }
 
@@ -224,6 +231,16 @@ export default function PresetsPanel({ onGetCurrentState, onLoadPreset }: Preset
                     </div>
 
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                      <button
+                        onClick={(e) => handleOverwrite(preset.id, e)}
+                        className="p-1 text-slate-500 hover:text-emerald-400 transition-colors"
+                        title="Save current state over this preset"
+                      >
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                      </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation()

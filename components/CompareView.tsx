@@ -9,6 +9,7 @@ import ConfigPanel from './ConfigPanel'
 import OutputPanel from './OutputPanel'
 import ModelSearch from './ModelSearch'
 import ExpandableTextarea from './ExpandableTextarea'
+import { openCompareWindow } from '@/lib/compare-window'
 
 export interface CompareViewHandle {
   getState: () => ComparePreset
@@ -196,8 +197,26 @@ const CompareView = forwardRef<CompareViewHandle, CompareViewProps>(function Com
       <div className="w-px bg-slate-800 flex-shrink-0 mx-3" />
 
       {/* Right: horizontally-scrollable model columns */}
-      <div className="flex-1 min-w-0 overflow-x-auto">
-        <div className="flex gap-4 pb-4" style={{ width: 'max-content', minWidth: '100%' }}>
+      <div className="flex-1 min-w-0 flex flex-col gap-0 overflow-hidden">
+        {/* Compare bar */}
+        {columns.filter(c => c.result?.ok).length >= 2 && (
+          <div className="flex items-center justify-center py-2 border-b border-slate-800 flex-shrink-0">
+            <button
+              onClick={() => openCompareWindow(columns.map(c => ({ model: c.model, result: c.result })))}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded
+                bg-slate-800 hover:bg-slate-700 border border-slate-600 hover:border-slate-500
+                text-slate-300 hover:text-slate-100 transition-colors"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Compare Results
+            </button>
+          </div>
+        )}
+        <div className="flex-1 overflow-x-auto">
+        <div className="flex gap-4 pb-4 pt-2" style={{ width: 'max-content', minWidth: '100%' }}>
           {columns.map((col, idx) => (
             <div key={col.id} className="flex flex-col gap-2 flex-shrink-0" style={{ width: COL_WIDTH }}>
               {/* Model header */}
@@ -266,6 +285,7 @@ const CompareView = forwardRef<CompareViewHandle, CompareViewProps>(function Com
               </svg>
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

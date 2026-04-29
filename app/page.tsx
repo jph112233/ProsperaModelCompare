@@ -10,6 +10,8 @@ import ConfigPanel from '@/components/ConfigPanel'
 import OutputPanel from '@/components/OutputPanel'
 import CompareView, { type CompareViewHandle } from '@/components/CompareView'
 import PresetsPanel from '@/components/PresetsPanel'
+import { openPrintWindow } from '@/lib/print'
+import { exportHtml } from '@/lib/export'
 
 const DEFAULT_CONFIG: RequestConfig = {
   apiKey: '',
@@ -116,17 +118,42 @@ export default function Home() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 bg-emerald-600 rounded flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.347.347A3.001 3.001 0 0112 21a3.001 3.001 0 01-2.12-.879l-.348-.347z" />
-            </svg>
-          </div>
-          <h1 className="text-base font-semibold tracking-tight">LLM API Playground</h1>
+          <a href="https://www.prosperahq.io/ai-lab" target="_blank" rel="noopener noreferrer">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://www.prosperahq.io/images/prospera_whitebg_color_horizontal-transparent-1.svg"
+              alt="Prospera"
+              className="h-8 w-auto"
+            />
+          </a>
+          <span className="w-px h-5 bg-slate-600" />
+          <span className="text-sm font-light tracking-widest text-slate-300 uppercase">Model Compare</span>
         </div>
 
         <div className="flex items-center gap-3">
           <PresetsPanel onGetCurrentState={getCurrentState} onLoadPreset={loadPreset} />
+          <button
+            onClick={() => exportHtml(getCurrentState())}
+            className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5"
+            title="Export as HTML"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export
+          </button>
+          <button
+            onClick={() => openPrintWindow(getCurrentState())}
+            className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5"
+            title="Print"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print
+          </button>
           <div className="w-px h-5 bg-slate-700" />
           <span className="text-xs text-slate-500">Compare</span>
           <button

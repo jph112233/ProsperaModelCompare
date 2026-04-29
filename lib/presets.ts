@@ -126,3 +126,9 @@ export function deletePreset(id: string): void {
 export function updatePresetName(id: string, name: string): void {
   writePresets(loadPresets().map((p) => p.id === id ? { ...p, name } : p))
 }
+
+export function overwritePreset(id: string, data: PresetData): void {
+  writePresets(loadPresets().map((p) =>
+    p.id === id ? { ...p, savedAt: new Date().toISOString(), data: slimData(data) } : p
+  ))
+}
