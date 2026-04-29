@@ -1,4 +1,6 @@
-# LLM API Playground
+# Prospera Model Compare
+by [Prospera Lab](https://prosperalab.xyz/)
+
 
 ![Model Compare screenshot](public/screenshot.png)
 
